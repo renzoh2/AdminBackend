@@ -58,11 +58,12 @@ class ProductsModule {
         $fileJson = null;
 
         //Preparing Filename
-        if(!empty($request->file))
+        if($request->hasFile('image'))
         {
             $fileNames = FileHandler::prepareFileName($request->file('image'));
             $fileJson = json_encode($fileNames);
         }
+        
 
         $products = new Products(
             $request['name'],
@@ -94,7 +95,7 @@ class ProductsModule {
         $fileJson = null;
 
         //Preparing Filename
-        if(!empty($request->file))
+        if($request->hasFile('image'))
         {
             $fileNames = FileHandler::prepareFileName($request->file('image'));
             $fileJson = json_encode($fileNames);
