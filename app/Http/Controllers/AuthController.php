@@ -12,4 +12,9 @@ class AuthController extends Controller
     {
         return AuthModule::loginAccount($request->all());
     }
+
+    public function logoutAccount()
+    {
+        AuthModule::logoutAccount();
+    }
 }

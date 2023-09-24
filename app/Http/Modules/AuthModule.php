@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper\ResponseBuilder;
+use Illuminate\Http\Request;
 
 class AuthModule{
 
@@ -65,6 +66,13 @@ class AuthModule{
                     'title' => Config::get('constants.login.fail.title'),
                     'message' => Config::get('constants.login.fail.message')
                 ]);
+    }
+
+    public static function logoutAccount()
+    {
+        $user = Auth::user();
+        /** @var \App\Models\User|null $user */
+        $user->tokens()->delete();
     }
 
 }
