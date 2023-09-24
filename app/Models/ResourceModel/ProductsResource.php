@@ -23,11 +23,11 @@ class ProductsResource implements ProductInterface {
         }
     }
 
-    public static function filterAllProducts(Request $request, Builder $products)
+    public static function filterAllProducts($request, Builder $products, bool $ByPage = true)
     {
         try{
             $pipeline = new ProductPipeline();
-            $products = $pipeline->__invoke($request, $products);
+            $products = $pipeline->__invoke($products, $ByPage);
     
             return $products;
         }

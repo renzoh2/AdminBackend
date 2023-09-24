@@ -9,7 +9,7 @@ interface ProductInterface{
 
     public static function getAllProducts();
 
-    public static function filterAllProducts(Request $request, Builder $products);
+    public static function filterAllProducts($request, Builder $products);
 
     public static function getProductById(int $id);
 

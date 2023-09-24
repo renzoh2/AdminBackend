@@ -11,7 +11,7 @@ class BySearch {
 
     public function handle(Builder $query, Closure $next){
         return $next($query)
-        ->when($this->request->has('search') && !empty($this->request->search), 
+        ->when($this->request->has('search') && isset($this->request->search), 
         fn($query) => $query->where(
             function($q){
                 $q->orWhere('description', 'regexp', $this->request->search);

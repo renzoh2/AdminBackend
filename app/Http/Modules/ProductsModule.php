@@ -20,10 +20,12 @@ class ProductsModule {
         if(empty($request->order)) $request['order'] = 'asc';
 
         $allData = ProductsResource::getAllProducts();
-        $recordData = $allData->get(); //Get all Products
-
+        $data = null;
         //Filter Products
-        $data = ProductsResource::filterAllProducts($request, $allData);
+        $recordData = ProductsResource::filterAllProducts($request, $allData, false); //Get all Products
+
+        $data = ProductsResource::filterAllProducts($request, $allData, true);
+
         
         $count = isset($data) ? count($data) : 0;
         $records = isset($recordData) ? count($recordData) : 0;
@@ -52,20 +54,29 @@ class ProductsModule {
 
     public static function createProduct(Request $request)
     {
+        $fileNames = null;
+        $fileJson = null;
+
         //Preparing Filename
-        $fileNames = FileHandler::prepareFileName($request->file('image'));
+        if(!empty($request->file))
+        {
+            $fileNames = FileHandler::prepareFileName($request->file('image'));
+            $fileJson = json_encode($fileNames);
+        }
 
         $products = new Products(
             $request['name'],
             $request['description'],
             $request['category'],
-            json_encode($fileNames),
+            $fileJson,
             $request['dateTimeCreated']
         );
 
-        $status = ProductsResource::saveProduct($products->toArray());
+        $filteredArray = array_filter($products->toArray());
 
-        if($status)
+        $status = ProductsResource::saveProduct($filteredArray);
+
+        if($status && !empty($fileNames))
         {
             FileHandler::fileUpload($request->file('image'), $fileNames);
         }
@@ -79,14 +90,21 @@ class ProductsModule {
 
     public static function updateProduct(Request $request, $id)
     {
-        //Preparing Filename
-        $fileNames = FileHandler::prepareFileName($request->file('image'));
+        $fileNames = null;
+        $fileJson = null;
 
+        //Preparing Filename
+        if(!empty($request->file))
+        {
+            $fileNames = FileHandler::prepareFileName($request->file('image'));
+            $fileJson = json_encode($fileNames);
+        }
+            
         $products = new Products(
             $request['name'],
             $request['description'],
             $request['category'],
-            json_encode($fileNames),
+            $fileJson,
             $request['dateTimeCreated']
         );
 
@@ -94,7 +112,7 @@ class ProductsModule {
 
         $status = ProductsResource::updateProduct($filteredArray, $id);
 
-        if($status)
+        if($status && !empty($fileNames))
         {
             FileHandler::fileUpload($request->file('image'), $fileNames);
         }

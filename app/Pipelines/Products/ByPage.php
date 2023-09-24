@@ -12,8 +12,8 @@ class ByPage {
     public function handle(Builder $query, Closure $next){
         return $next($query)
         ->when(
-            $this->request->has('page') && !empty($this->request->page) && 
-            $this->request->has('limit') && !empty($this->request->limit), 
+            $this->request->has('page') && isset($this->request->page) && 
+            $this->request->has('limit') && isset($this->request->limit), 
         function($query) {
             $skip = ((int) $this->request->page - 1) * (int) $this->request->limit;
             $query->skip($skip)->take($this->request->limit);

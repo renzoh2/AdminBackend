@@ -11,7 +11,7 @@ class ByOrder {
 
     public function handle(Builder $query, Closure $next){
         return $next($query)
-        ->when($this->request->has('sort') && !empty($this->request->sort) && $this->request->has('order') && !empty($this->request->order), 
+        ->when($this->request->has('sort') && isset($this->request->sort) && $this->request->has('order') && isset($this->request->order), 
         function($query) {
             if($this->request->order == 'desc') 
                 $query->orderByDesc($this->request->sort);

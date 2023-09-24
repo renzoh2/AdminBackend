@@ -11,14 +11,21 @@ class ProductPipeline
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, Builder $products)
+    public function __invoke(Builder $products, $ByPage = true)
     {
-        $pipelines = [
-            \App\Pipelines\Products\ByFilter::class,
-            \App\Pipelines\Products\BySearch::class,
-            \App\Pipelines\Products\ByOrder::class,
-            \App\Pipelines\Products\ByPage::class,
-        ];
+        if($ByPage == true)
+            $pipelines = [
+                \App\Pipelines\Products\ByFilter::class,
+                \App\Pipelines\Products\BySearch::class,
+                \App\Pipelines\Products\ByOrder::class,
+                \App\Pipelines\Products\ByPage::class,
+            ];
+        else
+            $pipelines = [
+                \App\Pipelines\Products\ByFilter::class,
+                \App\Pipelines\Products\BySearch::class,
+                \App\Pipelines\Products\ByOrder::class,
+            ];
 
         //$query = Products::query();
         $products = app(Pipeline::class)
