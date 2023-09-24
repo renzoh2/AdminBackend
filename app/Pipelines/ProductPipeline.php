@@ -13,21 +13,15 @@ class ProductPipeline
      */
     public function __invoke(Builder $products, $ByPage = true)
     {
-        if($ByPage == true)
-            $pipelines = [
-                \App\Pipelines\Products\ByFilter::class,
-                \App\Pipelines\Products\BySearch::class,
-                \App\Pipelines\Products\ByOrder::class,
-                \App\Pipelines\Products\ByPage::class,
-            ];
-        else
-            $pipelines = [
-                \App\Pipelines\Products\ByFilter::class,
-                \App\Pipelines\Products\BySearch::class,
-                \App\Pipelines\Products\ByOrder::class,
-            ];
+        $pipelines = [
+            \App\Pipelines\Products\ByFilter::class,
+            \App\Pipelines\Products\BySearch::class,
+            \App\Pipelines\Products\ByOrder::class,
+        ];
 
-        //$query = Products::query();
+        if($ByPage == true)
+            $pipelines[] = \App\Pipelines\Products\ByPage::class;
+
         $products = app(Pipeline::class)
         ->send($products)
         ->through($pipelines)
