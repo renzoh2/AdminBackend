@@ -23,6 +23,27 @@ For installation, use this command:
 
 -   composer install
 
+For Database, setup the database credentials to .env. <br>
+The defaults database credentials (Changeable if different credentials/setup):
+
+-   hostname = 127.0.0.1
+-   port = 3306
+-   database = myadmindb
+-   username = root
+-   password = root
+
+Inside MySQL, run query to create Database (myadmindb is user defined. Can change if wanted):
+
+-   create database myadmindb
+
+Then to populate the DB, run the database migration with seeder command:
+
+-   php artisan migrate:fresh --seed
+
+(OPTIONAL) For re-populate the DB, run:
+
+-   php artisan migrate:refresh --seed
+
 And to run the dev server, just type:
 
 -   php artisan serve
